@@ -1,0 +1,11 @@
+var TestToken = artifacts.require("./TestToken.sol");
+var TestTokenSale = artifacts.require("./TestTokenSale.sol");
+
+contract("TestTokenSale", function (accounts) {
+  it("Token Debug", async function () {
+	// *** Debugging js
+	let testVar = "test value";
+	assert.equal(1, 0, testVar);
+	// *** Debugging js
+  });
+});

@@ -11,7 +11,7 @@ contract("TestToken", function (accounts) {
     assert.equal(
       adminBalance.toNumber(),
       1000000,
-      "it allocates the initial supply to the admin acocunt"
+      "it allocates the initial supply to the admin account"
     );
   });
 
@@ -60,23 +60,22 @@ contract("TestToken", function (accounts) {
   it("Approve tokens for delegated transfer", async function () {
 	token = await TestToken.deployed();
 
-	approveResponse = await token.approve.call(accounts[1], 100);
+	approveResponse = await token.approve.call(accounts[1], 20);
 	assert.equal(approveResponse, true, 'it returns true');
 
-	receipt = await token.approve(accounts[1], 100, {from: accounts[0]});
+	receipt = await token.approve(accounts[1], 20, {from: accounts[0]});
 	assert.equal(approveResponse, true, 'it returns true');
 	assert.equal(receipt.logs.length, 1, "triggers one event");
 	assert.equal(receipt.logs[0].event, "Approval", 'should be the "Approval" event');
 	assert.equal(receipt.logs[0].args._owner, accounts[0], 'logs the account the tokens are authorized by');
 	assert.equal(receipt.logs[0].args._spender, accounts[1], 'logs the account the tokens are authorized to');
-	assert.equal(receipt.logs[0].args._value, 100, 'logs the transfer amount');
+	assert.equal(receipt.logs[0].args._value, 20, 'logs the transfer amount');
 
 	allowance = await token.allowance(accounts[0], accounts[1]);
-	assert.equal(allowance, 100, 'stores the allowance for delegated transfer');
+	assert.equal(allowance, 20, 'stores the allowance for delegated transfer');
   });
 
   it("Handles delegated token transfers", async function () {
-    approvalValue = 100;
 	fromAccount = accounts[2];
 	toAccount = accounts[3];
 	spendingAccount = accounts[4];
@@ -104,15 +103,15 @@ contract("TestToken", function (accounts) {
 		assert(error.message.indexOf('revert') >= 0, 'cannot transfer value larger than allowance');
 	};
 
-	testNormalTranferResult = await token.transferFrom.call(fromAccount, toAccount, 10, { from: spendingAccount });
-	assert.equal(testNormalTranferResult, true, 'Transacation can be done');
+	testNormalTransferResult = await token.transferFrom.call(fromAccount, toAccount, 10, { from: spendingAccount });
+	assert.equal(testNormalTransferResult, true, 'Transaction can be done');
 
-	normalTranferResult = await token.transferFrom(fromAccount, toAccount, 10, { from: spendingAccount });
-    assert.equal(normalTranferResult.logs.length, 1, "triggers one event");
-    assert.equal(normalTranferResult.logs[0].event, "Transfer", 'should be the "Transfer" event');
-	assert.equal(normalTranferResult.logs[0].args._from, fromAccount, 'logs the account the tokens are transferred from');
-	assert.equal(normalTranferResult.logs[0].args._to, toAccount, 'logs the account the tokens are transferred to');
-	assert.equal(normalTranferResult.logs[0].args._value, 10, 'logs the transfer amount');
+	normalTransferResult = await token.transferFrom(fromAccount, toAccount, 10, { from: spendingAccount });
+    assert.equal(normalTransferResult.logs.length, 1, "triggers one event");
+    assert.equal(normalTransferResult.logs[0].event, "Transfer", 'should be the "Transfer" event');
+	assert.equal(normalTransferResult.logs[0].args._from, fromAccount, 'logs the account the tokens are transferred from');
+	assert.equal(normalTransferResult.logs[0].args._to, toAccount, 'logs the account the tokens are transferred to');
+	assert.equal(normalTransferResult.logs[0].args._value, 10, 'logs the transfer amount');
 
 	fromBalance = await token.balanceOf(fromAccount);
 	assert.equal(fromBalance.toNumber(), 90, "Deducts the amount from the sending account");
@@ -126,3 +125,5 @@ contract("TestToken", function (accounts) {
 
 
 });
+
+ 

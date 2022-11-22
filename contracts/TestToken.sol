@@ -1,4 +1,4 @@
-pragma solidity ^0.8.17;
+pragma solidity ^0.7.1;
 
 contract TestToken {
     // making our variables public gives us free getter with the same name. ex: token.totalSupply()
@@ -65,5 +65,5 @@ contract TestToken {
 		emit Transfer(_from, _to, _value);
 
 		return true;
-	} 
+	}
 }

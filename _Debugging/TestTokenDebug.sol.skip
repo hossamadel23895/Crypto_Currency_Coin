@@ -1,0 +1,17 @@
+pragma solidity ^0.7.1;
+
+import "./TestToken.sol";
+
+contract TestTokenDebug {
+	string debugVar = "Test Value";
+
+	// *** Debugging solidity
+	event myVariables(string var1);
+	// *** Debugging solidity
+
+    function buyTokens() public payable {
+		// *** Debugging solidity
+		emit myVariables(debugVar);
+		// *** Debugging solidity
+    }
+}
